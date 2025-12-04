@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TIZ STORE - Investor Deck</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
+
+:root {
+  --bg-color: #000000;
+  --card-bg: rgba(59, 130, 246, 0.08);
+  --card-border: rgba(96, 165, 250, 0.3);
+  --accent-primary: #3b82f6;
+  --accent-secondary: #8b5cf6;
+  --accent-success: #10b981;
+  --accent-danger: #ef4444;
+  --accent-warning: #f59e0b;
+  --text-main: #ffffff;
+  --text-muted: #94a3b8;
+  --gradient-text: linear-gradient(135deg, #60a5fa 0%, #c084fc 100%);
+  --gradient-bg: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at 50% 50%, #0a0a0a 0%, #000000 100%);
+  color: var(--text-main);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+.slide-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+.slide {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0a0a0a 0%, #0f0f0f 100%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 80px rgba(59, 130, 246, 0.2);
+  display: none;
+  flex-direction: column;
+  padding: 4vh 5vw;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.slide.active {
+  display: flex;
+  opacity: 1;
+  transform: scale(1);
+  animation: slideIn 0.6s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Background Effects */
+.slide::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 40%, rgba(59, 130, 246, 0.15) 0%, transparent 60%),
+              radial-gradient(circle at 70% 60%, rgba(139, 92, 246, 0.1) 0%, transparent 60%);
+  z-index: 0;
+  pointer-events: none;
+  animation: backgroundPulse 8s ease-in-out infinite;
+}
+
+@keyframes backgroundPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.9; }
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Typography */
+h1, h2, h3 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: clamp(2.5rem, 4.5vw, 4rem);
+  margin-bottom: 3vh;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: gradientShift 3s ease infinite;
+  text-align: center;
+  line-height: 1.2;
+}
+
+h3 {
+  font-size: clamp(1.3rem, 1.5vw, 1.8rem);
+}
+
+@keyframes gradientShift {
+  0%, 100% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(10deg); }
+}
+
+.big-stat {
+  font-size: clamp(3rem, 5vw, 5rem);
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(135deg, #60a5fa, #c084fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 40px rgba(96, 165, 250, 0.5);
+  animation: statGlow 2s ease-in-out infinite;
+  margin-bottom: 1vh;
+}
+
+@keyframes statGlow {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.2); }
+}
+
+.stat-label {
+  font-size: clamp(1rem, 1.3vw, 1.4rem);
+  color: var(--text-muted);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Components */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 3vw; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2vw; align-items: center; }
+
+@media (max-width: 768px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+}
+.flex-center { display: flex; justify-content: center; align-items: center; }
+.flex-col { display: flex; flex-direction: column; }
+.h-full { height: 100%; }
+
+.card {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: clamp(12px, 2vw, 20px);
+  padding: clamp(1rem, 2vw, 1.5rem);
+  backdrop-filter: blur(20px);
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(96, 165, 250, 0.15), transparent);
+  transform: rotate(45deg);
+  transition: all 0.6s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
+  border-color: rgba(96, 165, 250, 0.6);
+}
+
+.card:hover::before {
+  left: 100%;
+}
+
+.highlight { color: #60a5fa; }
+.danger { color: #f87171; }
+.success { color: #34d399; }
+
+/* Specific Slide Styles */
+
+/* Slide 1 */
+.title-slide {
+  justify-content: center;
+  text-align: center;
+}
+.main-title {
+  font-size: clamp(4rem, 10vw, 8rem);
+  background: linear-gradient(135deg, #60a5fa, #ffffff, #c084fc);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 3vh;
+  animation: gradientMove 4s ease infinite;
+  text-shadow: 0 0 80px rgba(96, 165, 250, 0.5);
+  font-weight: 900;
+  line-height: 1;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.subtitle {
+  font-size: clamp(1.5rem, 3vw, 3rem);
+  color: #60a5fa;
+  margin-bottom: 4vh;
+  text-shadow: 0 0 30px rgba(96, 165, 250, 0.6);
+  animation: subtitlePulse 3s ease infinite;
+  line-height: 1.3;
+}
+
+@keyframes subtitlePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+.tagline {
+  font-size: clamp(1.1rem, 1.5vw, 1.8rem);
+  color: var(--text-muted);
+  padding: 1.5vh 3vw;
+  border: 2px solid var(--card-border);
+  border-radius: 50px;
+  display: inline-block;
+  backdrop-filter: blur(10px);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+/* Slide 2: Team */
+.team-card {
+  text-align: center;
+  padding: 1.5rem 1rem;
+}
+
+.team-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.team-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+.avatar-placeholder {
+  width: clamp(140px, 16vw, 180px);
+  height: clamp(140px, 16vw, 180px);
+  border-radius: 50%;
+  margin: 0 auto 2vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid rgba(96, 165, 250, 0.6);
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.5);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+}
+
+.avatar-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-placeholder:hover {
+  transform: scale(1.08) rotate(3deg);
+  box-shadow: 0 15px 40px rgba(59, 130, 246, 0.7);
+}
+.role { color: #60a5fa; font-size: clamp(1rem, 1.2vw, 1.3rem); margin-bottom: 0.5rem; font-weight: 600; }
+.uni { font-size: clamp(0.95rem, 1.1vw, 1.2rem); color: var(--text-muted); }
+
+/* Slide 3: Market */
+.market-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr 1fr;
+  gap: 1.5vw;
+  height: calc(100% - 8vh);
+  align-items: stretch;
+}
+
+@media (max-width: 768px) {
+  .market-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+}
+.market-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2vw;
+  animation: marketFadeIn 0.6s ease forwards;
+  opacity: 0;
+}
+
+.market-item:nth-child(1) { 
+  grid-column: span 1;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.1));
+  animation-delay: 0.1s;
+}
+.market-item:nth-child(2) { animation-delay: 0.2s; }
+.market-item:nth-child(3) { animation-delay: 0.3s; }
+.market-item:nth-child(4) { animation-delay: 0.4s; }
+.market-item:nth-child(5) { animation-delay: 0.5s; }
+.market-item:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes marketFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+.market-item strong { color: #60a5fa; }
+
+/* Slide 4: Problems */
+.problem-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5vh;
+  height: calc(100% - 8vh);
+  justify-content: space-evenly;
+}
+.problem-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 2vw;
+  font-size: clamp(1.15rem, 1.5vw, 1.6rem);
+  padding: 2.5vh 2vw;
+  line-height: 1.4;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+.problem-item:hover {
+  transform: translateX(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+.problem-icon {
+  font-size: clamp(1.8rem, 2.5vw, 2.2rem);
+  color: var(--accent-danger);
+  min-width: clamp(40px, 6vw, 50px);
+}
+
+/* Slide 5: Solution */
+.solution-hero {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.solution-hero p {
+  font-size: 1.1rem !important;
+}
+
+.solution-features {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 3vw;
+  margin-top: 4vh;
+}
+.feature-box {
+  flex: 1;
+  text-align: center;
+  padding: 3vh 2vw;
+  background: rgba(59, 130, 246, 0.08);
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  border-radius: 20px;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.feature-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+}
+
+.feature-box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(59, 130, 246, 0.4);
+  border-color: rgba(96, 165, 250, 0.8);
+  background: rgba(59, 130, 246, 0.15);
+}
+
+.feature-box:hover::before {
+  transform: scaleX(1);
+}
+
+.feature-icon { 
+  font-size: clamp(3rem, 5vw, 4.5rem); 
+  margin-bottom: clamp(1rem, 2vh, 2rem); 
+  display: block;
+  filter: drop-shadow(0 0 20px rgba(96, 165, 250, 0.6));
+  transition: all 0.3s ease;
+}
+
+.feature-box:hover .feature-icon {
+  transform: scale(1.2) rotate(10deg);
+}
+
+/* Slide 6: Competition */
+.comp-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 1.5vh;
+  margin-top: 3vh;
+}
+.comp-table th {
+  text-align: left;
+  padding: 2vh 2vw;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: clamp(1rem, 1.2vw, 1.3rem);
+  border-bottom: 2px solid var(--card-border);
+}
+.comp-table td {
+  padding: 2.5vh 2vw;
+  background: var(--card-bg);
+  font-size: clamp(0.95rem, 1.1vw, 1.2rem);
+}
+.comp-table tr td:first-child { border-radius: 10px 0 0 10px; font-weight: 600; }
+.comp-table tr td:last-child { border-radius: 0 10px 10px 0; }
+.tiz-col { color: #60a5fa; font-weight: 800; font-size: 1.1rem; }
+
+/* Slide 7: MVP 1.0 */
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  height: calc(100% - 8vh);
+  justify-content: space-evenly;
+}
+.check-item {
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.1), transparent);
+  padding: 2.5vh 2vw;
+  border-radius: 12px;
+  border-left: 4px solid var(--accent-success);
+  display: flex;
+  align-items: center;
+  gap: 2vw;
+  font-size: clamp(1.15rem, 1.5vw, 1.6rem);
+  line-height: 1.4;
+}
+
+/* Slide 8: MVP 2.0 */
+.flow-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100% - 8vh);
+  gap: 3vw;
+  flex-wrap: nowrap;
+}
+.flow-step {
+  background: var(--card-bg);
+  padding: 3vh 2vw;
+  border-radius: 20px;
+  text-align: center;
+  width: 22vw;
+  border: 2px solid var(--card-border);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .flow-container { flex-direction: column; }
+  .flow-arrow { transform: rotate(90deg); }
+}
+.flow-arrow {
+  font-size: clamp(2.5rem, 3vw, 3.5rem);
+  color: var(--text-muted);
+}
+.flow-step h4 { color: #60a5fa; margin-bottom: 1vh; font-size: clamp(1.3rem, 1.6vw, 1.8rem); }
+.release-badge {
+  position: absolute;
+  bottom: clamp(30px, 5vh, 50px);
+  right: clamp(40px, 6vw, 70px);
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: #fff;
+  padding: clamp(0.5rem, 1vh, 0.75rem) clamp(1rem, 2vw, 2rem);
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: clamp(0.9rem, 1.6vw, 1.1rem);
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.6);
+  animation: badgePulse 2s ease infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.6);
+  }
+  50% { 
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px rgba(59, 130, 246, 0.8);
+  }
+}
+
+/* Slide 9: Roadmap */
+.timeline {
+  position: relative;
+  padding-left: 3vw;
+  height: calc(100% - 8vh);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background: linear-gradient(to bottom, #60a5fa, #333);
+}
+.timeline-item {
+  position: relative;
+  padding-left: 3vw;
+  font-size: clamp(1.15rem, 1.4vw, 1.5rem);
+  line-height: 1.5;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -9px;
+  top: 6px;
+  width: 20px;
+  height: 20px;
+  background: #0a0a0a;
+  border: 4px solid #333;
+  border-radius: 50%;
+}
+.timeline-item.active::before {
+  border-color: #60a5fa;
+  box-shadow: 0 0 10px #60a5fa;
+}
+.timeline-date { color: #60a5fa; font-weight: 700; margin-right: 1rem; }
+
+/* Slide 10: Ask */
+.ask-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5vw;
+  height: calc(100% - 8vh);
+  align-items: center;
+}
+.ask-list li {
+  margin-bottom: 2.5vh;
+  font-size: clamp(1.2rem, 1.5vw, 1.6rem);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 1.5vw;
+  line-height: 1.4;
+}
+.ask-list li::before {
+  content: '✓';
+  color: #fbbf24;
+  font-weight: bold;
+}
+.contact-box {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  padding: 4vh 3vw;
+  border-radius: 24px;
+  text-align: center;
+  border: 2px solid rgba(96, 165, 250, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.email {
+  font-size: clamp(1.3rem, 1.8vw, 2rem);
+  color: #60a5fa;
+  font-weight: 700;
+  margin-top: 2vh;
+  display: block;
+}
+
+/* Navigation Controls */
+.nav-controls {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  z-index: 1000;
+}
+
+.nav-btn {
+  background: rgba(59, 130, 246, 0.2);
+  border: 2px solid rgba(96, 165, 250, 0.4);
+  color: #60a5fa;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.nav-btn:hover {
+  background: rgba(59, 130, 246, 0.4);
+  border-color: rgba(96, 165, 250, 0.8);
+  transform: scale(1.1);
+  box-shadow: 0 5px 20px rgba(59, 130, 246, 0.5);
+}
+
+.nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.slide-counter {
+  background: rgba(59, 130, 246, 0.2);
+  border: 2px solid rgba(96, 165, 250, 0.4);
+  color: #60a5fa;
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+}
+
+.dots-container {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0 1rem;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(96, 165, 250, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background: #60a5fa;
+  width: 30px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px #60a5fa;
+}
+
+/* Progress Bar */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  transition: width 0.3s ease;
+  z-index: 1001;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+}
+
+/* Fullscreen Button */
+.fullscreen-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(59, 130, 246, 0.2);
+  border: 2px solid rgba(96, 165, 250, 0.4);
+  color: #60a5fa;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  z-index: 1002;
+}
+
+.fullscreen-btn:hover {
+  background: rgba(59, 130, 246, 0.4);
+  border-color: rgba(96, 165, 250, 0.8);
+  transform: scale(1.1);
+  box-shadow: 0 5px 20px rgba(59, 130, 246, 0.5);
+}
+
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<button class="fullscreen-btn" id="fullscreenBtn" onclick="toggleFullscreen()" title="Полноэкранный режим">⛶</button>
+
+<div class="slide-container" id="slideContainer">
+
+  <!-- SLIDE 1: Title -->
+  <div class="slide">
+    <div class="content title-slide">
+      <h1 class="main-title">TIZ STORE</h1>
+      <p class="subtitle">Fast Lane to Your Name</p>
+      <div class="tagline">Платформа для создания Mini Apps за минуты</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Team -->
+  <div class="slide">
+    <div class="content">
+      <h2>Команда</h2>
+      <div class="grid-3 h-full items-center">
+        <div class="card team-card">
+          <div class="avatar-placeholder"><img src="стас.png" alt="Станислав Мишкевич"></div>
+          <h3>Мишкевич Станислав</h3>
+          <p class="role">CEO, CPO, Design</p>
+          <p class="uni">2 курс КФУ ИВМИИТ</p>
+        </div>
+        <div class="card team-card">
+          <div class="avatar-placeholder"><img src="артемий.png" alt="Артемий Матяж"></div>
+          <h3>Матяж Артемий</h3>
+          <p class="role">co-CEO, DevOps, Backend</p>
+          <p class="uni">2 курс КФУ ИВМИИТ</p>
+        </div>
+        <div class="card team-card">
+          <div class="avatar-placeholder"><img src="илья.png" alt="Илья Сафронов"></div>
+          <h3>Сафронов Илья</h3>
+          <p class="role">co-CEO, Teamlead Fullstack</p>
+          <p class="uni">2 курс КФУ ИВМИИТ</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Market -->
+  <div class="slide">
+    <div class="content">
+      <h2>Рынок: Россия — готовый плацдарм</h2>
+      <div class="market-grid" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr;">
+        <div class="card market-item">
+          <div class="big-stat highlight">6+</div>
+          <div class="stat-label">трлн ₽ оборот e‑commerce в России — рынок уже горит</div>
+        </div>
+        <div class="card market-item">
+          <div class="big-stat">45+</div>
+          <div class="stat-label">млн онлайн‑покупателей ищут простые решения</div>
+        </div>
+        <div class="card market-item">
+          <div class="big-stat">70+</div>
+          <div class="stat-label">млн активных пользователей Telegram в РФ — готовая аудитория</div>
+        </div>
+        <div class="card market-item" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(52, 211, 153, 0.1));">
+          <div class="big-stat success">+32%</div>
+          <div class="stat-label">ежегодный рост российского e-commerce</div>
+        </div>
+        <div class="card market-item" style="grid-column: span 2;">
+          <div style="font-size: clamp(1.1rem, 1.4vw, 1.5rem); line-height: 1.5;">
+            <strong style="color: #60a5fa; font-size: clamp(1.2rem, 1.5vw, 1.6rem);">Mini Apps — новый стандарт:</strong><br>
+            Сервисы доставки, маркетплейсы, онлайн-запись — все переходят в Telegram
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Problems -->
+  <div class="slide">
+    <div class="content">
+      <h2>Проблемы: Барьеры Входа</h2>
+      <div class="problem-list">
+        <div class="problem-item card" style="background: linear-gradient(90deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05)); border-left: 5px solid #ef4444;">
+          <span class="problem-icon">⚠️</span>
+          <div>
+            <div style="font-size: clamp(1.3rem, 1.7vw, 1.8rem); margin-bottom: 0.5vh;">
+              <strong class="danger" style="font-size: clamp(2rem, 2.5vw, 2.8rem);">1.5%</strong> конверсия от клика до установки
+            </div>
+            <div style="font-size: clamp(0.95rem, 1.2vw, 1.3rem); color: var(--text-muted);">
+              Потеря 98.5% потенциальных пользователей из-за сложности установки
+            </div>
+          </div>
+        </div>
+        <div class="problem-item card" style="background: linear-gradient(90deg, rgba(139, 92, 246, 0.15), rgba(139, 92, 246, 0.05)); border-left: 5px solid #8b5cf6;">
+          <span class="problem-icon">🧩</span>
+          <div>
+            <div style="font-size: clamp(1.3rem, 1.7vw, 1.8rem); margin-bottom: 0.5vh;">
+              Существующие конструкторы <strong class="danger">сложны</strong> в использовании
+            </div>
+            <div style="font-size: clamp(0.95rem, 1.2vw, 1.3rem); color: var(--text-muted);">
+              Требуют технических знаний и недель обучения
+            </div>
+          </div>
+        </div>
+        <div class="problem-item card" style="background: linear-gradient(90deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05)); border-left: 5px solid #f59e0b;">
+          <span class="problem-icon">🎨</span>
+          <div>
+            <div style="font-size: clamp(1.3rem, 1.7vw, 1.8rem); margin-bottom: 0.5vh;">
+              Отсутствует <strong class="danger">нативный UX/UI</strong> в решениях
+            </div>
+            <div style="font-size: clamp(0.95rem, 1.2vw, 1.3rem); color: var(--text-muted);">
+              Пользователи чувствуют разницу с привычным интерфейсом
+            </div>
+          </div>
+        </div>
+        <div class="problem-item card" style="background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05)); border-left: 5px solid #3b82f6;">
+          <span class="problem-icon">🚫</span>
+          <div>
+            <div style="font-size: clamp(1.3rem, 1.7vw, 1.8rem); margin-bottom: 0.5vh;">
+              Малому бизнесу <strong class="danger">недоступны</strong> modern-сервисы
+            </div>
+            <div style="font-size: clamp(0.95rem, 1.2vw, 1.3rem); color: var(--text-muted);">
+              Высокий порог входа отсекает 80% потенциального рынка SMB
+            </div>
+          </div>
+        </div>
+        <div class="problem-item card" style="background: linear-gradient(90deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.08)); border-left: 5px solid #ef4444; border: 2px solid rgba(239, 68, 68, 0.4);">
+          <span class="problem-icon">💰</span>
+          <div>
+            <div style="font-size: clamp(1.3rem, 1.7vw, 1.8rem); margin-bottom: 0.5vh;">
+              Разработка: <strong class="danger" style="font-size: clamp(2rem, 2.5vw, 2.8rem);">500k-1M ₽</strong> и <strong class="danger" style="font-size: clamp(2rem, 2.5vw, 2.8rem);">3+ месяца</strong>
+            </div>
+            <div style="font-size: clamp(0.95rem, 1.2vw, 1.3rem); color: var(--text-muted);">
+              Нужна команда: дизайнер, frontend, backend, DevOps, тестировщик
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Solution -->
+  <div class="slide">
+    <div class="content">
+      <div class="solution-hero">
+        <h2>Решение: TIZ STORE</h2>
+        <p style="font-size: clamp(1.2rem, 1.5vw, 1.6rem); color: #cbd5e1; max-width: 900px; margin: 0 auto 3vh; line-height: 1.6;">
+          Платформа для быстрого создания Mini Apps с <span class="highlight">нативным UX/UI</span> и управлением на базе <span class="highlight">ИИ-агента</span>
+        </p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2vw; margin-bottom: 3vh;">
+        <div class="feature-box" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.1)); border-color: rgba(59, 130, 246, 0.5);">
+          <span class="feature-icon">⚡</span>
+          <h3 style="font-size: clamp(1.3rem, 1.6vw, 1.8rem); margin-bottom: 1vh;">За 10 минут</h3>
+          <p class="stat-label" style="font-size: clamp(0.95rem, 1.1vw, 1.2rem);">Вместо 3+ месяцев разработки</p>
+          <div style="margin-top: 1vh; color: #60a5fa; font-weight: 700; font-size: clamp(1.1rem, 1.3vw, 1.4rem);">↑3000% быстрее</div>
+        </div>
+        <div class="feature-box" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(52, 211, 153, 0.1)); border-color: rgba(16, 185, 129, 0.5);">
+          <span class="feature-icon">💸</span>
+          <h3 style="font-size: clamp(1.3rem, 1.6vw, 1.8rem); margin-bottom: 1vh;">Копейки</h3>
+          <p class="stat-label" style="font-size: clamp(0.95rem, 1.1vw, 1.2rem);">Вместо 500k-1M ₽</p>
+          <div style="margin-top: 1vh; color: #34d399; font-weight: 700; font-size: clamp(1.1rem, 1.3vw, 1.4rem);">↑99% дешевле</div>
+        </div>
+        <div class="feature-box" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(192, 132, 252, 0.1)); border-color: rgba(139, 92, 246, 0.5);">
+          <span class="feature-icon">👤</span>
+          <h3 style="font-size: clamp(1.3rem, 1.6vw, 1.8rem); margin-bottom: 1vh;">Без команды</h3>
+          <p class="stat-label" style="font-size: clamp(0.95rem, 1.1vw, 1.2rem);">Не нужен дизайнер, dev, DevOps</p>
+          <div style="margin-top: 1vh; color: #c084fc; font-weight: 700; font-size: clamp(1.1rem, 1.3vw, 1.4rem);">Один человек = 1 магазин</div>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2vw;">
+        <div class="card" style="padding: 2.5vh 2vw; background: linear-gradient(135deg, rgba(96, 165, 250, 0.1), rgba(59, 130, 246, 0.05));">
+          <div style="font-size: clamp(1.2rem, 1.5vw, 1.6rem); margin-bottom: 1.5vh; color: #60a5fa; font-weight: 700;">🎯 Ключевые преимущества</div>
+          <ul style="list-style: none; padding: 0; font-size: clamp(1rem, 1.2vw, 1.3rem); line-height: 1.8;">
+            <li style="margin-bottom: 1vh;"><span style="color: #34d399; margin-right: 1vw;">✓</span> Без кода — простой текстовый промпт</li>
+            <li style="margin-bottom: 1vh;"><span style="color: #34d399; margin-right: 1vw;">✓</span> 100% нативный Telegram UI</li>
+            <li style="margin-bottom: 1vh;"><span style="color: #34d399; margin-right: 1vw;">✓</span> Мгновенный запуск — нет установки</li>
+            <li><span style="color: #34d399; margin-right: 1vw;">✓</span> Автообновления без перезагрузки</li>
+          </ul>
+        </div>
+        <div class="card" style="padding: 2.5vh 2vw; background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(239, 68, 68, 0.05));">
+          <div style="font-size: clamp(1.2rem, 1.5vw, 1.6rem); margin-bottom: 1.5vh; color: #f59e0b; font-weight: 700;">🚀 Что внутри?</div>
+          <ul style="list-style: none; padding: 0; font-size: clamp(1rem, 1.2vw, 1.3rem); line-height: 1.8;">
+            <li style="margin-bottom: 1vh;"><span style="color: #60a5fa; margin-right: 1vw;">•</span> Библиотека готовых UI-компонентов</li>
+            <li style="margin-bottom: 1vh;"><span style="color: #60a5fa; margin-right: 1vw;">•</span> ИИ-агент для управления логикой</li>
+            <li style="margin-bottom: 1vh;"><span style="color: #60a5fa; margin-right: 1vw;">•</span> Интеграция с платежами и CRM</li>
+            <li><span style="color: #60a5fa; margin-right: 1vw;">•</span> Аналитика и A/B-тестирование</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Competition -->
+  <div class="slide">
+    <div class="content">
+      <h2>Конкурентное Преимущество</h2>
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Критерий</th>
+            <th class="tiz-col">TIZ STORE</th>
+            <th>WebBot</th>
+            <th>Teleport</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Быстрый запуск</td>
+            <td class="success">✓</td>
+            <td class="success">✓</td>
+            <td class="success">✓</td>
+          </tr>
+          <tr>
+            <td>Нативный UX/UI</td>
+            <td class="success">✓ Уникально</td>
+            <td class="text-muted">–</td>
+            <td class="text-muted">–</td>
+          </tr>
+          <tr>
+            <td>Управление ИИ</td>
+            <td class="success">✓ Уникально</td>
+            <td class="text-muted">–</td>
+            <td class="text-muted">–</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: MVP 1.0 -->
+  <div class="slide">
+    <div class="content">
+      <h2>Текущее состояние: MVP 1.0</h2>
+      <div class="checklist">
+        <div class="check-item">
+          <span>🚀</span> Реализована <strong>MVP версия 1.0</strong> платформы
+        </div>
+        <div class="check-item">
+          <span>🤝</span> Подтверждена гипотеза на <strong>первом реальном клиенте</strong>
+        </div>
+        <div class="check-item">
+          <span>🛍️</span> Создан работающий магазин в <strong>e-commerce сегменте</strong>
+        </div>
+        <div class="check-item">
+          <span>❤️</span> Получен <strong>первый лояльный клиент</strong>
+        </div>
+        <div class="check-item">
+          <span>🛠️</span> Проверены <strong>технические компетенции</strong> команды
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: MVP 2.0 -->
+  <div class="slide">
+    <div class="content">
+      <h2>MVP 2.0: Один Промпт = Готовый Магазин</h2>
+      <div style="display: flex; flex-direction: column; gap: 3vh; height: calc(100% - 8vh);">
+        <div class="flow-container" style="height: auto; flex: 1;">
+          <div class="flow-step" style="background: linear-gradient(135deg, rgba(96, 165, 250, 0.15), rgba(59, 130, 246, 0.1)); border: 3px solid rgba(96, 165, 250, 0.5); position: relative; overflow: visible;">
+            <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #60a5fa, #3b82f6); color: white; padding: 0.5vh 2vw; border-radius: 20px; font-size: clamp(0.85rem, 1vw, 1.1rem); font-weight: 700; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);">ШАГ 1</div>
+            <div style="font-size: clamp(3rem, 4vw, 4.5rem); margin-bottom: 1.5vh;">💬</div>
+            <h4 style="font-size: clamp(1.4rem, 1.8vw, 2rem); margin-bottom: 1vh;">Пользователь</h4>
+            <p class="stat-label" style="font-size: clamp(1rem, 1.2vw, 1.3rem);">Вводит описание текстом</p>
+            <div style="margin-top: 1.5vh; padding: 1.5vh 1.5vw; background: rgba(0,0,0,0.3); border-radius: 12px; font-size: clamp(0.9rem, 1.1vw, 1.2rem); font-style: italic; color: #cbd5e1;">
+              “Сделай магазин одежды с каталогом и корзиной”
+            </div>
+          </div>
+          <div class="flow-arrow" style="font-size: clamp(2.5rem, 3.5vw, 4rem); color: #60a5fa;">→</div>
+          <div class="flow-step" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(192, 132, 252, 0.15)); border: 3px solid rgba(139, 92, 246, 0.6); box-shadow: 0 0 30px rgba(139, 92, 246, 0.3); position: relative; overflow: visible;">
+            <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #8b5cf6, #c084fc); color: white; padding: 0.5vh 2vw; border-radius: 20px; font-size: clamp(0.85rem, 1vw, 1.1rem); font-weight: 700; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.5);">ШАГ 2</div>
+            <div style="font-size: clamp(3rem, 4vw, 4.5rem); margin-bottom: 1.5vh;">✨</div>
+            <h4 style="font-size: clamp(1.4rem, 1.8vw, 2rem); margin-bottom: 1vh; color: #c084fc;">ИИ Агент</h4>
+            <p class="stat-label" style="font-size: clamp(1rem, 1.2vw, 1.3rem);">Генерирует из библиотеки</p>
+            <div style="margin-top: 1.5vh; display: flex; gap: 1vw; justify-content: center; flex-wrap: wrap;">
+              <span style="background: rgba(139, 92, 246, 0.3); padding: 0.5vh 1vw; border-radius: 8px; font-size: clamp(0.85rem, 1vw, 1.1rem);">🏛️ UI</span>
+              <span style="background: rgba(139, 92, 246, 0.3); padding: 0.5vh 1vw; border-radius: 8px; font-size: clamp(0.85rem, 1vw, 1.1rem);">⚙️ Логика</span>
+              <span style="background: rgba(139, 92, 246, 0.3); padding: 0.5vh 1vw; border-radius: 8px; font-size: clamp(0.85rem, 1vw, 1.1rem);">📦 Бэкенд</span>
+            </div>
+          </div>
+          <div class="flow-arrow" style="font-size: clamp(2.5rem, 3.5vw, 4rem); color: #34d399;">→</div>
+          <div class="flow-step" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(52, 211, 153, 0.15)); border: 3px solid rgba(16, 185, 129, 0.6); position: relative; overflow: visible;">
+            <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #10b981, #34d399); color: white; padding: 0.5vh 2vw; border-radius: 20px; font-size: clamp(0.85rem, 1vw, 1.1rem); font-weight: 700; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.5);">РЕЗУЛЬТАТ</div>
+            <div style="font-size: clamp(3rem, 4vw, 4.5rem); margin-bottom: 1.5vh;">📱</div>
+            <h4 style="font-size: clamp(1.4rem, 1.8vw, 2rem); margin-bottom: 1vh; color: #34d399;">Готовый App</h4>
+            <p class="stat-label" style="font-size: clamp(1rem, 1.2vw, 1.3rem);">Магазин готов к работе</p>
+            <div style="margin-top: 1.5vh; color: #34d399; font-weight: 700; font-size: clamp(1.1rem, 1.4vw, 1.5rem);">
+              ⏱️ 10 минут
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 3vw;">
+          <div class="card" style="padding: 2.5vh 3vw; background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2)); border: 3px solid rgba(96, 165, 250, 0.5); text-align: center; min-width: 300px; box-shadow: 0 10px 40px rgba(59, 130, 246, 0.4); position: relative; overflow: hidden;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, #3b82f6, #8b5cf6, #3b82f6); background-size: 200% 100%; animation: gradientSlide 3s linear infinite;"></div>
+            <div style="font-size: clamp(1.3rem, 1.6vw, 1.8rem); color: #60a5fa; font-weight: 700; margin-bottom: 1vh;">🚀 Релиз: Январь 2026</div>
+            <div style="font-size: clamp(1rem, 1.2vw, 1.3rem); color: #cbd5e1; line-height: 1.5;">
+              Полноценная версия с ИИ-агентом<br>
+              <span style="color: #60a5fa; font-weight: 600;">Доступна для всех пользователей</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<style>
+@keyframes gradientSlide {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 200% 0%; }
+}
+</style>
+
+  <!-- SLIDE 9: Roadmap -->
+  <div class="slide">
+    <div class="content">
+      <h2>Roadmap 2025-2026</h2>
+      <div class="timeline">
+        <div class="timeline-item active">
+          <span class="timeline-date">Сентябрь 2025</span>
+          <span>Текущее состояние (MVP 1.0)</span>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-date">Декабрь 2025</span>
+          <span>MVP 2.0 Beta</span>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-date" style="color: #fff;">Январь 2026</span>
+          <span style="font-size: 1.2rem; font-weight: bold; color: #fff;">🚀 MVP 2.0 Release</span>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-date">Февраль-Март 2026</span>
+          <span>MVP 3.0 (масштабирование)</span>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-date">Апрель 2026</span>
+          <span>Product 1.0 (full release)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: Ask -->
+  <div class="slide">
+    <div class="content">
+      <h2>Нам нужна ваша помощь</h2>
+      <div class="ask-grid">
+        <div>
+          <h3 style="margin-bottom: 2rem; color: #fbbf24;">Ищем инвестиции для масштабирования</h3>
+          <ul class="ask-list">
+            <li>Финансирование разработки</li>
+            <li>Стратегические партнерства</li>
+            <li>Опытного sales-менеджера</li>
+            <li>Экспертизу в e-commerce</li>
+          </ul>
+        </div>
+        <div class="contact-box">
+          <p style="color: var(--text-muted);">Свяжитесь с нами</p>
+          <a href="mailto:hello@tizstore.com" class="email">hello@tizstore.com</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="nav-controls">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">‹</button>
+  <div class="dots-container" id="dotsContainer"></div>
+  <div class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">10</span></div>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">›</button>
+</div>
+
+<script>
+let currentSlideIndex = 0;
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+const dotsContainer = document.getElementById('dotsContainer');
+const progressBar = document.getElementById('progressBar');
+
+// Create dots
+for (let i = 0; i < totalSlides; i++) {
+  const dot = document.createElement('div');
+  dot.className = 'dot';
+  dot.onclick = () => goToSlide(i);
+  dotsContainer.appendChild(dot);
+}
+
+function updateSlide() {
+  slides.forEach((slide, index) => {
+    slide.classList.toggle('active', index === currentSlideIndex);
+  });
+  
+  const dots = document.querySelectorAll('.dot');
+  dots.forEach((dot, index) => {
+    dot.classList.toggle('active', index === currentSlideIndex);
+  });
+  
+  document.getElementById('currentSlide').textContent = currentSlideIndex + 1;
+  document.getElementById('prevBtn').disabled = currentSlideIndex === 0;
+  document.getElementById('nextBtn').disabled = currentSlideIndex === totalSlides - 1;
+  
+  const progress = ((currentSlideIndex + 1) / totalSlides) * 100;
+  progressBar.style.width = progress + '%';
+}
+
+function changeSlide(direction) {
+  currentSlideIndex += direction;
+  if (currentSlideIndex < 0) currentSlideIndex = 0;
+  if (currentSlideIndex >= totalSlides) currentSlideIndex = totalSlides - 1;
+  updateSlide();
+}
+
+function goToSlide(index) {
+  currentSlideIndex = index;
+  updateSlide();
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ') {
+    e.preventDefault();
+    if (currentSlideIndex < totalSlides - 1) changeSlide(1);
+  } else if (e.key === 'ArrowLeft') {
+    e.preventDefault();
+    if (currentSlideIndex > 0) changeSlide(-1);
+  } else if (e.key === 'f' || e.key === 'F') {
+    toggleFullscreen();
+  }
+});
+
+// Fullscreen toggle
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(err => {
+      console.log(`Error attempting to enable fullscreen: ${err.message}`);
+    });
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+}
+
+// Initialize
+updateSlide();
+</script>
+
+</body>
+</html>
